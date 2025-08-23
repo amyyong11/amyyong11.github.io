@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact | Amy Yong</title>
+
+  <!-- Shared fonts + theme -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Page-specific styles to match your mock -->
+  <style>
+    .contact-page{ padding:120px 20px 80px; }
+    .contact-hero{
+      display:grid; grid-template-columns: 1.2fr 0.8fr; gap:clamp(20px,5vw,60px);
+      align-items:start; max-width:1000px; margin:0 auto 30px;
+    }
+    .contact-heading{
+      font-family:"Cormorant Garamond",serif; font-weight:700; color:var(--pink);
+      font-size:clamp(44px,6vw,78px); line-height:1.05; letter-spacing:.3px; margin:0 0 22px;
+      text-shadow:0 6px 16px rgba(0,0,0,.08), 0 1px 0 rgba(0,0,0,.05);
+    }
+    .contact-heading .scriptish{
+      display:inline-block; font-style:italic; font-weight:700;
+      font-size:1.05em; transform:rotate(-2deg);
+      text-shadow:0 6px 16px rgba(0,0,0,.12), 0 1px 0 rgba(0,0,0,.06);
+    }
+    .contact-cards{
+      display:grid; grid-template-columns:1fr 1fr; gap:32px; margin:10px 0 36px;
+    }
+    .contact-card h3{
+      font-family:"Lora",serif; font-weight:600; color:var(--pink); letter-spacing:.12em;
+      font-size:18px; margin:0 0 8px; text-transform:uppercase;
+      text-shadow:0 2px 8px rgba(232,107,157,.18);
+    }
+    .contact-card p{ margin:0; line-height:1.9; font-size:18px; }
+    .contact-card a{ color:var(--ink); text-decoration:none; border-bottom:1px dotted var(--border) }
+    .contact-card a:hover{ color:var(--pink); border-color:var(--pink) }
+
+    /* (previous simple socials styles remain above) */
+
+    /* === Pretty socials — glossy pink badges with gentle lift === */
+    .socials{ display:flex; gap:16px; align-items:center; }
+
+    /* override the earlier `.socials a` rule with a more specific selector */
+    .socials .social{
+      --chip-grad: linear-gradient(180deg,#ffe6f1,#ffd2e8);
+      --chip-border:#f7cce0;
+
+      width:44px; height:44px; border-radius:12px;
+      display:grid; place-items:center;
+      background:var(--chip-grad);
+      border:1px solid var(--chip-border);
+      color:var(--pink-dark);
+      position:relative;
+      text-decoration:none;
+      transition:transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow:0 8px 18px rgba(232,107,157,.22), inset 0 1px 0 rgba(255,255,255,.65);
+    }
+    .socials .social::after{
+      content:""; position:absolute; inset:0; border-radius:inherit;
+      background:linear-gradient(45deg,rgba(255,255,255,.85),rgba(255,255,255,0) 45%);
+      mix-blend-mode:screen; opacity:.7; pointer-events:none;
+    }
+    .socials .social:hover{
+      transform:translateY(-3px);
+      box-shadow:0 12px 26px rgba(232,107,157,.35), inset 0 1px 0 rgba(255,255,255,.75);
+      filter:saturate(1.05);
+    }
+
+    /* SVG sizing + resets (beats earlier `.socials svg` rule) */
+    .socials .social svg{ width:22px; height:22px; display:block; stroke:none; }
+
+    /* LinkedIn: pink tile with white "in" */
+    .social--li svg rect{ fill:currentColor }
+    .social--li svg path{ fill:#fff }
+
+    /* Instagram: outlined camera in pink */
+    .social--ig svg rect,
+    .social--ig svg circle{
+      fill:none; stroke:currentColor; stroke-width:1.8;
+    }
+
+    /* Right image */
+    .contact-illustration{
+      max-width:380px; margin:0 auto; filter:drop-shadow(0 12px 24px rgba(232,107,157,.22));
+    }
+    .contact-illustration img{ display:block; width:100%; height:auto; }
+
+    /* Form */
+    .contact-form{ max-width:1000px; margin:0 auto; display:grid; gap:14px; }
+    .contact-form label{ font-weight:600; color:var(--ink) }
+    .contact-form input, .contact-form textarea{
+      width:100%; padding:14px 16px; border-radius:12px; border:1px solid var(--border);
+      background:#fff; font:inherit; outline:none;
+      box-shadow:0 2px 6px rgba(232,107,157,.08);
+      transition:border-color .2s, box-shadow .2s;
+    }
+    .contact-form input:focus, .contact-form textarea:focus{
+      border-color:var(--pink);
+      box-shadow:0 8px 18px rgba(232,107,157,.18);
+    }
+    .contact-form button{
+      margin-top:6px; padding:14px 18px; border-radius:12px; border:1px solid var(--border);
+      background:linear-gradient(180deg, #f39ac2, #e86b9d);
+      color:#fff; font-weight:700; cursor:pointer; letter-spacing:.2px;
+      box-shadow:0 10px 24px rgba(232,107,157,.32);
+    }
+    .contact-form button:hover{ filter:brightness(1.05) }
+    .form-status{ margin-top:4px; font-size:14px; }
+
+    @media (max-width:900px){
+      .contact-hero{ grid-template-columns:1fr; }
+      .contact-illustration{ max-width:260px }
+      .contact-cards{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shared Nav -->
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <img class="brand-mark" src="assets/flower-logo.png" alt="" aria-hidden="true">
+      <span>Amy Yong</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <ul class="nav__list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="experiences.html">Experiences</a></li>
+        <li><a href="snapshots.html">Other Snapshots</a></li>
+        <li><a href="contact.html" class="active">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="contact-page">
+    <section class="contact-hero">
+      <div>
+        <h1 class="contact-heading">Let’s stay in <span class="scriptish">touch!</span></h1>
+
+        <div class="contact-cards">
+          <div class="contact-card">
+            <h3>EMAIL</h3>
+            <p><a href="mailto:amy.yong@mail.utoronto.ca">amy.yong@mail.utoronto.ca</a></p>
+          </div>
+          <div class="contact-card">
+            <h3>SOCIALS</h3>
+            <div class="socials">
+              <!-- LinkedIn (glossy badge) -->
+              <a class="social social--li"
+                 href="https://www.linkedin.com/in/yongamy/"
+                 aria-label="LinkedIn" title="LinkedIn" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="4"></rect>
+                  <path d="M7 10h2v7H7zM8 7.8a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zM11 10h2v1.1c.45-.82 1.27-1.3 2.34-1.3 1.86 0 3.16 1.22 3.16 3.58V17h-2v-3.12c0-1.35-.56-2.02-1.64-2.02-1.05 0-1.86.74-1.86 2.08V17h-2z"/>
+                </svg>
+              </a>
+
+              <!-- Instagram (outlined camera) -->
+              <a class="social social--ig"
+                 href="https://www.instagram.com/amy.yong_"
+                 aria-label="Instagram" title="Instagram" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                  <circle cx="12" cy="12" r="3.5"></circle>
+                  <circle cx="17.5" cy="6.5" r="1"></circle>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <figure class="contact-illustration">
+        <img src="assets/bunny.png" alt="Cute strawberry bunny illustration">
+      </figure>
+    </section>
+
+    <!-- ✅ Formspree-enabled form -->
+    <form id="contactForm"
+          action="https://formspree.io/f/xdkdvlzn"
+          method="POST"
+          class="contact-form">
+      <input type="hidden" name="_subject" value="New message from amyyong.site">
+      <!-- honeypot (spam trap) -->
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none">
+
+      <label> Name
+        <input type="text" name="name" required />
+      </label>
+      <label> Email
+        <input type="email" name="email" required />
+      </label>
+      <label> Message
+        <textarea name="message" rows="6" required></textarea>
+      </label>
+
+      <button type="submit" id="sendBtn">Send</button>
+      <p class="form-status" aria-live="polite" hidden></p>
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Amy Yong</small>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <!-- Inline success/error handling for Formspree -->
+  <script>
+  (function () {
+    const form   = document.getElementById('contactForm');
+    const status = form.querySelector('.form-status');
+    const btn    = document.getElementById('sendBtn');
+
+    function show(msg, ok=true){
+      status.hidden = false;
+      status.textContent = msg;
+      status.style.color = ok ? 'var(--pink)' : '#b00020';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      show('');
+      btn.disabled = true; btn.textContent = 'Sending…';
+
+      try {
+        const resp = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+
+        if (resp.ok) {
+          form.reset();
+          show('Thanks! Your message was sent ~ I’ll get back to you soon ♡', true);
+        } else {
+          const data = await resp.json().catch(()=> ({}));
+          const msg = (data && data.error) ? data.error : 'Something went wrong. Please try again or email me directly.';
+          show(msg, false);
+        }
+      } catch (err) {
+        show('Network error. Please try again in a moment.', false);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Send';
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

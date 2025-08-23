@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Me | Amy Yong</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    /* ---------- Page Typography Tweaks ---------- */
+    .about-page h1{
+      font-family:"Cormorant Garamond",serif;
+      font-weight:700;
+      font-size:clamp(34px,5.2vw,64px);
+      letter-spacing:.3px;
+      color:var(--pink);
+      margin:0 0 16px;
+      line-height:1.1;
+    }
+    .about-page p{ font-size:clamp(15px,1.7vw,18px); line-height:1.7; margin:0 0 14px; }
+
+    /* ---------- Swan anchored to title ---------- */
+    .about-title{
+      display:inline-flex; align-items:flex-end; gap:12px;
+      margin:0 0 16px;
+    }
+    .about-title .swan-mark{
+      width:clamp(40px, 7vw, 67px); height:auto;
+      transform:translateY(4px);
+      filter: drop-shadow(0 4px 10px rgba(232,107,157,.25));
+      pointer-events:none; user-select:none;
+    }
+    @media (max-width:700px){
+      .about-title{ gap:8px; margin-bottom:12px; }
+      .about-title .swan-mark{ width:56px; transform:translateY(2px); }
+    }
+    /* (kept for compatibility; overridden by the mobile fix below) */
+    @media (max-width:480px){
+      .about-title{ flex-direction:column; align-items:center; gap:6px; }
+      .about-title .swan-mark{ width:52px; transform:none; }
+    }
+
+    /* ---------- Header spacing guard ---------- */
+    .about-page .container,
+    .campus-strip .campus-wrap{ max-width:1100px; margin:0 auto; }
+
+    /* ---------- About grid (mobile-first) ---------- */
+    .about-hero{
+      display:grid; grid-template-columns: 1fr;
+      gap:20px; align-items:start;
+      padding: calc(70px + 24px) 16px 40px; /* leave room for fixed header */
+    }
+    .about-hero .photo{
+      max-width:540px; margin:0 auto;
+      border-radius:24px; overflow:hidden;
+      box-shadow:0 10px 30px rgba(232,107,157,.18);
+    }
+    .about-hero .photo img{ display:block; width:100%; height:auto; }
+
+    @media (min-width: 760px){
+      .about-hero{
+        grid-template-columns: 360px minmax(0,1fr);
+        gap: clamp(24px,4.5vw,48px);
+        padding: 120px 24px 56px;
+      }
+      .about-hero .photo{ max-width:unset; }
+    }
+    @media (min-width: 1024px){
+      .about-hero{ grid-template-columns: 400px minmax(0,1fr); padding: 130px 24px 70px; }
+    }
+
+    /* ---------- Eyebrow + Campus hero ---------- */
+    .eyebrow{
+      font-family:'Lora',serif; font-weight:600; letter-spacing:.18em;
+      color:var(--pink);
+      font-size: clamp(16px, 2.2vw, 26px);
+      text-shadow: 0 3px 10px rgba(232,107,157,.18);
+      margin-bottom:12px;
+    }
+    .campus-strip{ padding:50px 16px 80px; background:#fff; }
+    .campus-title{
+      margin:24px 0 16px;
+      font-family:'Cormorant Garamond',serif; font-weight:700;
+      font-size:clamp(28px,4.2vw,54px); letter-spacing:.3px; color:var(--pink);
+    }
+    .campus-hero{
+      display:block; width:min(820px,100%);
+      aspect-ratio:16/9; object-fit:cover; margin:0 auto;
+      border-radius:24px; border:4px solid #f9e4ec;
+      box-shadow:0 12px 30px rgba(232,107,157,.18);
+    }
+    .campus-hero + .spacer{ height: clamp(16px,4vw,36px); }
+
+    /* ---------- Masonry (responsive columns) ---------- */
+    .masonry{ column-gap:16px; margin:6px auto 0; max-width:980px; }
+    .masonry-item{
+      break-inside:avoid; margin:0 0 16px; display:inline-block; width:100%;
+      border-radius:12px; overflow:hidden; background:#fff; border:1px solid var(--border);
+      box-shadow:none;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      will-change: transform, box-shadow;
+      cursor: zoom-in;
+    }
+    .masonry-item img{ display:block; width:100%; height:auto; object-fit:cover; }
+    .masonry .masonry-item:hover{
+      transform: translateY(-8px) scale(1.01);
+      border-color: var(--pink);
+      box-shadow: 0 16px 34px rgba(232,107,157,.32), 0 8px 16px rgba(0,0,0,.06), inset 0 0 0 1px var(--pink);
+    }
+    @media (pointer: coarse){
+      .masonry .masonry-item:hover{ transform:none; box-shadow:none; border-color:var(--border); }
+    }
+    .masonry{ column-count:1; }
+    @media (min-width: 560px){ .masonry{ column-count:2; } }
+    @media (min-width: 900px){ .masonry{ column-count:3; } }
+
+    /* ---------- Fullscreen viewer (mobile-friendly) ---------- */
+    .fs{
+      position:fixed; inset:0; display:none; place-items:center;
+      background:rgba(0,0,0,.82); z-index:2000; padding:16px;
+    }
+    .fs.open{ display:grid; }
+    .fs__img{
+      max-width:100%; max-height:80vh; object-fit:contain; border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    .fs__btn, .fs__close{
+      position:absolute; background:rgba(255,255,255,.9); color:#000;
+      border:none; border-radius:999px; padding:10px 14px; font-size:18px; line-height:1; cursor:pointer;
+      box-shadow:0 4px 12px rgba(0,0,0,.2);
+      touch-action:manipulation;
+    }
+    .fs__prev{ left:12px; top:50%; transform:translateY(-50%); }
+    .fs__next{ right:12px; top:50%; transform:translateY(-50%); }
+    .fs__close{ top:12px; right:12px; font-size:16px; padding:10px 12px; }
+    @media (min-width: 768px){
+      .fs__btn, .fs__close{ font-size:20px; padding:12px 16px; }
+    }
+
+    /* ---------- MOBILE FIX: Keep swan beside the title ---------- */
+    @media (max-width:480px){
+      .about-title{
+        flex-direction: row !important;   /* override earlier column layout */
+        align-items: baseline;
+        gap: 8px;
+      }
+      .about-title .swan-mark{
+        width: 44px;
+        transform: translateY(2px);
+      }
+    }
+
+    /* Smaller swan on mobile */
+    @media (max-width:480px){
+      .about-title .swan-mark{
+        width: 34px;          /* was 44px */
+        transform: translateY(1px);
+      }
+      .about-title{ gap: 6px; }
+    }
+
+    /* Extra-small phones */
+    @media (max-width:360px){
+      .about-title .swan-mark{ width: 30px; }
+      .about-title{ gap: 5px; }
+    }
+
+    /* === New: nudge swan slightly lower on mobile === */
+    @media (max-width:480px){
+      .about-title .swan-mark{
+        transform: translateY(5px); /* push down a bit more */
+      }
+    }
+    @media (max-width:360px){
+      .about-title .swan-mark{
+        transform: translateY(6px); /* a touch more on very small phones */
+      }
+    }
+  </style>
+</head>
+<body>
+  
+<header class="site-header">
+  <a class="brand" href="index.html">
+    <img class="brand-mark" src="assets/flower-logo.png" alt="" aria-hidden="true">
+    <span>Amy Yong</span>
+  </a>
+  <nav class="nav" aria-label="Primary">
+    <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    <ul class="nav__list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About Me</a></li>
+      <li><a href="experiences.html">Experiences</a></li>
+      <li><a href="snapshots.html">Other Snapshots</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main class="about-page">
+  <div class="container about-hero">
+    <figure class="photo">
+      <img src="assets/amy - pink.png" alt="Portrait of Amy Yong" />
+    </figure>
+    <div class="copy">
+      <h1 class="about-title">
+        <span>About Me</span>
+        <img class="swan-mark" src="assets/swan.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+      </h1>
+      <p>I’m a final-year Cognitive Science &amp; Psychology student at the University of Toronto with a CS minor, curious about how people think and how products should feel. I’m especially interested in attention, perception, and memory—and how insights from those areas can guide gentler, more intuitive interfaces.</p>
+      <p>Right now I’m building <strong>Melofy</strong>, a “Pinterest for music” that pairs short audio previews with visuals to capture moods and moments. I love bringing ideas to life. When I’m not tinkering with UI, you’ll probably find me at a café sipping matcha or enjoying a lovely nature walk.</p>
+    </div>
+  </div>
+</main>
+
+<section class="campus-strip">
+  <div class="container campus-wrap" style="text-align:center;">
+    <div class="eyebrow">UNIVERSITY OF TORONTO</div>
+    <img src="assets/uoft.jpg" alt="University College, University of Toronto" class="campus-hero">
+    <div class="spacer"></div>
+    <h2 class="campus-title">School life</h2>
+
+    <div class="masonry" id="school-masonry">
+      <figure class="masonry-item"><img src="assets/school photos/school-1.png" alt="Campus view 1"></figure>
+      <figure class="masonry-item"><img src="assets/school photos/school-2.png" alt="Campus view 2"></figure>
+      <figure class="masonry-item"><img src="assets/school photos/school-3.png" alt="Campus view 3"></figure>
+      <figure class="masonry-item"><img src="assets/school photos/school-4.png" alt="Campus view 4"></figure>
+      <figure class="masonry-item"><img src="assets/school photos/school-5.png" alt="Campus view 5"></figure>
+      <figure class="masonry-item"><img src="assets/school photos/school-6.png" alt="Campus view 6"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- Fullscreen viewer -->
+<div class="fs" id="fs" aria-hidden="true" role="dialog" aria-label="Image viewer">
+  <button class="fs__btn fs__prev" aria-label="Previous image">‹</button>
+  <img class="fs__img" id="fsImg" alt="">
+  <button class="fs__btn fs__next" aria-label="Next image">›</button>
+  <button class="fs__close" aria-label="Close">Close ✕</button>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <small>© <span id="year"></span> Amy Yong</small>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
+<script>
+  // --- Masonry fullscreen viewer ---
+  (function(){
+    const overlay = document.getElementById('fs');
+    const imgEl   = document.getElementById('fsImg');
+    const thumbs  = Array.from(document.querySelectorAll('#school-masonry .masonry-item img'));
+    const prevBtn = overlay.querySelector('.fs__prev');
+    const nextBtn = overlay.querySelector('.fs__next');
+    const closeBtn= overlay.querySelector('.fs__close');
+    let i = 0;
+    function show(index){
+      i = index;
+      const src = thumbs[i].getAttribute('src');
+      const alt = thumbs[i].getAttribute('alt') || '';
+      imgEl.src = src; imgEl.alt = alt;
+      overlay.classList.add('open');
+      overlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+    function hide(){
+      overlay.classList.remove('open');
+      overlay.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      imgEl.src = ''; imgEl.alt = '';
+    }
+    function prev(){ i = (i - 1 + thumbs.length) % thumbs.length; show(i); }
+    function next(){ i = (i + 1) % thumbs.length; show(i); }
+    thumbs.forEach((img, idx) => img.addEventListener('click', () => show(idx)));
+    prevBtn.addEventListener('click', (e)=>{ e.stopPropagation(); prev(); });
+    nextBtn.addEventListener('click', (e)=>{ e.stopPropagation(); next(); });
+    closeBtn.addEventListener('click', (e)=>{ e.stopPropagation(); hide(); });
+    overlay.addEventListener('click', (e)=>{ if (e.target === overlay) hide(); });
+    window.addEventListener('keydown', (e) => {
+      if(!overlay.classList.contains('open')) return;
+      if(e.key === 'Escape') hide();
+      if(e.key === 'ArrowLeft') prev();
+      if(e.key === 'ArrowRight') next();
+    });
+  })();
+
+  // footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

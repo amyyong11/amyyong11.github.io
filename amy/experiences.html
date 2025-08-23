@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Experiences | Amy Yong</title>
+
+  <!-- Shared fonts + theme -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+
+ <style>
+  /* ===== Unified rose palette (safe if duplicated in styles.css) ===== */
+  :root{
+    --pink: #E86B9D;
+    --pink-rgb: 232,107,157;
+    --rose-50:  color-mix(in oklab, var(--pink) 10%, white);
+    --rose-100: color-mix(in oklab, var(--pink) 18%, white);
+    --rose-200: color-mix(in oklab, var(--pink) 26%, white);
+    --ink: #2D2A2E;
+    --border: #EBD5DF;
+  }
+
+  /* ===== Pretty header (petals + wave), no roses ===== */
+  .top-pretty{
+    position:relative; height:300px; /* was 340px */
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(1200px 520px at 12% -30%, var(--rose-200) 0%, var(--rose-100) 45%, transparent 80%),
+      radial-gradient(1200px 520px at 88% -40%, var(--rose-200) 0%, var(--rose-100) 45%, transparent 80%),
+      linear-gradient(180deg, var(--rose-50) 0%, #fff 88%);
+    box-shadow: inset 0 -18px 40px rgba(255,255,255,.65);
+  }
+
+  .title-wrap{ position:relative; z-index:2; text-align:center; padding:10px 20px; } /* was 18px 20px */
+  .title-wrap h1{
+    margin:0 0 6px; letter-spacing:.3px;
+    font-family:"Cormorant Garamond",serif; font-weight:700;
+    font-size:clamp(38px,5.2vw,64px); color:var(--pink);
+    text-shadow:0 6px 16px rgba(0,0,0,.08);
+  }
+  .title-wrap p{
+    margin:0; font-family:"Lora",serif; font-weight:600;
+    font-size:clamp(15px,1.3vw,18px); color:var(--ink);
+  }
+
+  /* floating petals */
+  .petals{ position:absolute; inset:0; pointer-events:none; }
+  .petal{
+    position:absolute; width:18px; height:28px; border-radius:60% 60% 40% 40%;
+    background: radial-gradient(circle at 40% 30%, #fff, var(--rose-100));
+    box-shadow: 0 8px 18px rgba(var(--pink-rgb), .22);
+    transform: rotate(18deg);
+    opacity:.9; animation:petalFloat 8s ease-in-out infinite;
+  }
+  .p1{ left:14%; top:28%; transform:rotate(22deg); animation-delay:.0s }
+  .p2{ left:28%; top:14%; transform:rotate(40deg); animation-delay:.3s }
+  .p3{ left:48%; top:34%; transform:rotate(-10deg); animation-delay:.6s }
+  .p4{ left:66%; top:18%; transform:rotate(32deg); animation-delay:1.0s }
+  .p5{ left:82%; top:30%; transform:rotate(-6deg); animation-delay:1.4s }
+  @keyframes petalFloat{
+    0%,100%{ transform:translateY(0) rotate(0deg) }
+    50%{ transform:translateY(-12px) rotate(6deg) }
+  }
+
+  /* wavy divider */
+  .wave{
+    position:absolute; left:0; right:0; bottom:-1px; height:70px; /* was 88px */
+    width:100%; pointer-events:none; display:block;
+    filter: drop-shadow(0 -4px 8px rgba(255,255,255,.7));
+  }
+
+  /* ===== Timeline & cards ===== */
+  .timeline{
+    max-width:1000px;
+    margin:-12px auto 90px; /* was 24px auto 90px */
+    padding:0 20px; position:relative;
+  }
+  .timeline::before{
+    content:""; position:absolute; top:0; bottom:0; left:30px; width:2px;
+    background:linear-gradient(180deg,#ffd9e9,#f7aac7); opacity:.6;
+  }
+  .exp{ position:relative; display:grid; grid-template-columns:60px 1fr; gap:16px; margin:24px 0; }
+  .exp-dot{
+    position:relative; top:6px; width:16px; height:16px; border-radius:50%;
+    background:var(--pink); box-shadow:0 0 0 6px rgba(var(--pink-rgb),.12); border:2px solid #fff;
+  }
+  .exp-card{
+    background:#fff; border:1px solid var(--border); border-radius:16px;
+    padding:18px 18px 16px;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .exp-card:hover{
+    transform:translateY(-6px);
+    border-color:var(--pink);
+    box-shadow:0 16px 34px rgba(var(--pink-rgb),.32), 0 8px 16px rgba(0,0,0,.06), inset 0 0 0 1px var(--pink);
+  }
+  .exp-role{
+    margin:0; font-family:"Cormorant Garamond",serif; font-weight:700;
+    font-size:clamp(22px,2.8vw,30px); color:var(--ink);
+  }
+  .exp-meta{ margin:6px 0 12px; display:flex; flex-wrap:wrap; gap:10px 14px; color:#6b6b6b; font-size:14px; }
+  .pill{
+    display:inline-block; padding:6px 10px; border-radius:999px;
+    border:1px solid var(--border); background:#fff;
+    box-shadow:0 2px 6px rgba(var(--pink-rgb), .08);
+    font-weight:600; color:#7b6a73;
+  }
+  .exp-desc{ margin:0; line-height:1.8; }
+  .exp-desc li{ margin:.25em 0; }
+
+  .section-label{
+    text-align:center; margin:56px 0 10px; letter-spacing:.18em;
+    font-family:"Lora",serif; font-weight:600; color:var(--pink);
+  }
+
+  .cards{ max-width:1000px; margin:10px auto 80px; padding:0 20px; display:grid; gap:16px; }
+  .cards.two{ grid-template-columns:1fr 1fr; }
+  .cards.three{ grid-template-columns:1fr 1fr 1fr; }
+  @media (max-width:900px){ .cards.two,.cards.three{ grid-template-columns:1fr } }
+
+  .card{
+    background:#fff; border:1px solid var(--border); border-radius:16px; padding:18px;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .card:hover{
+    transform:translateY(-6px);
+    border-color:var(--pink);
+    box-shadow:0 16px 34px rgba(var(--pink-rgb),.32), 0 8px 16px rgba(0,0,0,.06), inset 0 0 0 1px var(--pink);
+  }
+  .card h3{ margin:0 0 6px; font-family:"Cormorant Garamond",serif; font-weight:700; font-size:22px; color:var(--ink); }
+  .card .meta{ margin:0 0 8px; color:#6b6b6b; font-size:14px; }
+  .card ul{ margin:0; padding-left:18px; line-height:1.8; }
+
+  @media (max-width:600px){
+    .top-pretty{ height:260px; } /* was 280px */
+    .wave{ height:60px; }
+    .timeline{ margin-top:-8px; }
+  }
+  @media (max-width:700px){
+    .timeline::before{ left:22px }
+    .exp{ grid-template-columns:46px 1fr }
+    .exp-dot{ width:14px; height:14px; top:8px }
+  }
+</style>
+
+</head>
+<body>
+
+  <!-- Shared Nav -->
+  <header class="site-header">
+    <a class="brand" href="index.html">
+      <img class="brand-mark" src="assets/flower-logo.png" alt="" aria-hidden="true">
+      <span>Amy Yong</span>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <ul class="nav__list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Me</a></li>
+        <li><a href="experiences.html" class="active">Experiences</a></li>
+        <li><a href="snapshots.html">Other Snapshots</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- 🌸 Pretty header (no roses) -->
+  <section class="top-pretty" aria-label="Header">
+    <div class="petals">
+      <span class="petal p1"></span>
+      <span class="petal p2"></span>
+      <span class="petal p3"></span>
+      <span class="petal p4"></span>
+      <span class="petal p5"></span>
+    </div>
+    <div class="title-wrap">
+      <br>
+      <h1>Experiences</h1>
+      <br>
+      <p>Things I’ve built, studied & led</p>
+    </div>
+    <!-- wavy divider -->
+    <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#ffffff" d="M0,64 C180,110 360,10 540,44 C720,78 900,118 1080,88 C1260,58 1440,8 1440,8 L1440,120 L0,120 Z"></path>
+    </svg>
+  </section>
+
+  <!-- Timeline -->
+  <main class="timeline">
+    <article class="exp">
+      <div class="exp-dot" aria-hidden="true"></div>
+      <div class="exp-card">
+        <h2 class="exp-role">Co-founder & Software Developer — Melofy</h2>
+        <div class="exp-meta">
+          <span class="pill">Jul 2025 – Present</span>
+          <span class="pill">Toronto, ON</span>
+          <span class="pill">Incubated @ UofT DCSIL</span>
+        </div>
+        <ul class="exp-desc">
+          <li>Co-founded a “Pinterest for music” where users build vibe-based moodboards with short clips + visuals.</li>
+          <li>Built a cross-platform Flutter app: fullscreen playback, integrated 30-sec previews, theme-based navigation.</li>
+          <li>Integrated iTunes Search API for previews with synced album metadata; ran user tests and iterated UI/UX.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="exp">
+      <div class="exp-dot" aria-hidden="true"></div>
+      <div class="exp-card">
+        <h2 class="exp-role">VP of Technology — Simply Med (non-profit)</h2>
+        <div class="exp-meta">
+          <span class="pill">Jul 2025 – Present</span>
+          <span class="pill">Toronto, ON</span>
+        </div>
+        <ul class="exp-desc">
+          <li>Designed, built, and maintain the website (HTML/CSS/JS) to improve access to student medical resources.</li>
+          <li>Ship regular content/features for events and learning materials; align digital presence with org goals.</li>
+          <li>Boost visibility and engagement across the student community.</li>
+        </ul>
+      </div>
+    </article>
+
+    <article class="exp">
+      <div class="exp-dot" aria-hidden="true"></div>
+      <div class="exp-card">
+        <h2 class="exp-role">Research Assistant — Dept. of Psychology, University of Toronto</h2>
+        <div class="exp-meta">
+          <span class="pill">Sep 2024 – Present</span>
+          <span class="pill">Plaks Lab · Human-AI Trust</span>
+        </div>
+        <ul class="exp-desc">
+          <li>Contribute to study design, data-collection protocols, and specifications to improve study quality.</li>
+          <li>Run participant sessions with lab members; ensure robust and equitable data collection.</li>
+        </ul>
+      </div>
+    </article>
+
+    <div class="section-label">EDUCATION</div>
+    <article class="exp">
+      <div class="exp-dot" aria-hidden="true"></div>
+      <div class="exp-card">
+        <h2 class="exp-role">University of Toronto — H.B.Sc. Cognitive Science & Psychology (double major), Computer Science (minor)</h2>
+        <div class="exp-meta">
+          <span class="pill">2021 – 2026 (expected)</span>
+          <span class="pill">Toronto, ON</span>
+        </div>
+        <ul class="exp-desc">
+          <li>Interests: attention, perception, memory; applying cognitive insights to human-centered and ethical technology.</li>
+        </ul>
+      </div>
+    </article>
+  </main>
+
+  <div class="section-label">CERTIFICATIONS</div>
+  <section class="cards two">
+    <article class="card">
+      <h3>Human Factors & Usability Engineering</h3>
+      <p class="meta">Arizona State University · Coursera · 2024</p>
+      <ul><li>Human-centered design, error reduction, perceptual displays, attention/memory/decision heuristics.</li></ul>
+    </article>
+    <article class="card">
+      <h3>Machine Learning Specialization</h3>
+      <p class="meta">Stanford University · Coursera · 2024</p>
+      <ul><li>Supervised/unsupervised models, tuning & evaluation; neural nets incl. CNNs for vision tasks.</li></ul>
+    </article>
+  </section>
+
+  <div class="section-label">PROJECTS</div>
+  <section class="cards three">
+    <article class="card">
+      <h3>SOLID Chat — Java/JavaSwing</h3>
+      <p class="meta">Software Design · Fall 2022</p>
+      <ul><li>Built auth, profiles, friending, search, and conversation history; emphasized usability & smooth UX.</li></ul>
+    </article>
+    <article class="card">
+      <h3>Gift It — Mobile Prototype</h3>
+      <p class="meta">Computational Design · Fall 2023</p>
+      <ul><li>User-centered process: studies, storyboards, low/high-fi protos; iterative testing & refinement.</li></ul>
+    </article>
+  </section>
+
+  <div class="section-label">LEADERSHIP</div>
+  <section class="cards two">
+    <article class="card">
+      <h3>Peer Mentor</h3>
+      <p class="meta">Dept. of Psychology · Sep 2024 – Apr 2025</p>
+      <ul><li>Guided undergrads on courses/resources; supported student success & well-being.</li></ul>
+    </article>
+    <article class="card">
+      <h3>COMC Marker</h3>
+      <p class="meta">Canadian Mathematical Society · 2022–2023</p>
+      <ul><li>Marked submissions for the Canadian Open Mathematics Challenge (Crowdmark platform).</li></ul>
+    </article>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Amy Yong</small>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
