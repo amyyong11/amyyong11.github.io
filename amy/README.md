@@ -1,2 +1,0 @@
-# amyyong
-personal website
